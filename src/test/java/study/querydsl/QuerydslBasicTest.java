@@ -73,9 +73,8 @@ public class QuerydslBasicTest {
     public void search() {
         Member findMember = queryFactory
                 .selectFrom(member)
-                .where(member.username.eq("member1")
-                        // 메서드 체인으로 연결
-                        .and(member.age.eq(10)))
+                .where(member.username.eq("member1"),
+                        member.age.eq(10))
                 .fetchOne();
 
         assertThat(findMember.getUsername()).isEqualTo("member1");
