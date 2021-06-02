@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import study.querydsl.entity.Member;
-import study.querydsl.entity.QMember;
 import study.querydsl.entity.Team;
 
 import javax.persistence.EntityManager;
@@ -65,6 +64,18 @@ public class QuerydslBasicTest {
                 .select(member)
                 .from(member)
                 .where(member.username.eq("member1"))    //파라미터 바인딩 처리
+                .fetchOne();
+
+        assertThat(findMember.getUsername()).isEqualTo("member1");
+    }
+
+    @Test
+    public void search() {
+        Member findMember = queryFactory
+                .selectFrom(member)
+                .where(member.username.eq("member1")
+                        // 메서드 체인으로 연결
+                        .and(member.age.eq(10)))
                 .fetchOne();
 
         assertThat(findMember.getUsername()).isEqualTo("member1");
